@@ -57,10 +57,29 @@ python -m pip --no-cache-dir install -r requirements-deploy-py3.10.txt -i https:
 
 #### Download model files 
 [Download RIFE v4.6](https://github.com/hzwer/Practical-RIFE)
+
 [Download EMAVFI](https://github.com/MCG-NJU/EMA-VFI)
+
+To be added:
+
 [Download RLFN]()
+
 [Download RealESRGAN]()
+
 [Download ShuffleCUGAN]()
+
+Place the model file in the appropriate folder, eg:
+
+```shell
+ckpt/
+├── EMAVFI
+│   ├── PutCheckpointsHere.txt
+│   ├── emavfi_s_t.pkl
+│   └── emavfi_t.pkl
+├── RIFEv4.6
+│   ├── PutCheckpointsHere.txt
+│   └── flownet.pkl
+```
 
 ## Usage
 
@@ -71,16 +90,9 @@ export GRADIO_TEMP_DIR=./temp/gradio && python webui.py --config=config.yaml  # 
 
 ## Acknowledgements
 
-Thanks! to the RIFE and EMA-VFI folks for their amazing AI frame interpolation tool
 - https://github.com/megvii-research/ECCV2022-RIFE
 - https://github.com/MCG-NJU/EMA-VFI
-
-Thanks! to the Real-ESRGAN folks for their wonderful frame upscaling tool
 - https://github.com/xinntao/Real-ESRGAN
-
-Thanks! to the EMA-VFI-WebUI folks for their great UI, amazing tool, and for inspiring me to learn Gradio
 - https://github.com/jhogsett/EMA-VFI-WebUI
-
-Thanks to Gradio for their easy-to-use Web UI building tool and great docs
 - https://gradio.app/
 - https://github.com/gradio-app/gradio
