@@ -1,0 +1,17 @@
+directories:
+  working: "temp"
+  output_video_interpolation: "output/interpolation_videos"
+  output_video_upscaling: "output/upscaling_videos"
+use_time_step: False
+gpu_ids: "0" # *future use* (cuda device:0 is presumed)
+auto_launch_browser: True
+server_port: 7860
+server_name: "0.0.0.0"
+logviewer_settings:
+  max_lines: 25
+user_interface:
+  tips_path: "guide"
+  theme: "default"
+  css_file: "webui.css"
+  log_file: None
+  show_header: True
