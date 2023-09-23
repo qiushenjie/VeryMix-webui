@@ -76,7 +76,7 @@ class Upscaling:
 
             frame = torch.from_numpy(np.transpose(frame, (2, 0, 1))).to(self.device, non_blocking=True).unsqueeze(0).float() / 255.
             frame = padder.pad(frame)
-            sr_frame = self.model.inference(frame, sr_factor=args.sr_factor)
+            sr_frame = self.model.inference(frame)
             sr_frame = (sr_frame[0] * 255).byte().cpu().numpy().transpose(1, 2, 0)
 
             write_buffer.put(sr_frame)

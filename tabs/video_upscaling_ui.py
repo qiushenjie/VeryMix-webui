@@ -209,7 +209,7 @@ class VideoUpscaling(TabBase):
 
     def run_enhance(self, sr_session_state, progress=gr.Progress()):
         # model init
-        sr_session_state.engine = UpscalingEngine(self.base_config.gpu_ids)
+        sr_session_state.engine = UpscalingEngine(self.base_config.gpu_ids, sr_session_state.sr_factor)
         sr_session_state.engine.load(sr_session_state.model_name)
         sr = Upscaling(sr_session_state.engine.model, sr_session_state.log_obj.log)
 

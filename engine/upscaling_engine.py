@@ -19,10 +19,11 @@ from models.ShuffleCUGAN.ShuffleCUGAN import ShuffleCUGAN
 
 
 class UpscalingEngine:
-    def __init__(self, gpu_ids):
+    def __init__(self, gpu_ids, sr_factor=2):
         """Iniitalize the class by calling into sr code"""
         gpu_id_array = self.init_device(gpu_ids)
         self.model= None
+        self.sr_factor = sr_factor
 
     def init_device(self, gpu_ids : str):
         """for *future use*"""
@@ -41,28 +42,28 @@ class UpscalingEngine:
     def load(self, model_name):
         try:
             if model_name == 'RLFN':
-                sr_model = RLFN()
+                sr_model = RLFN(sr_factor=self.sr_factor)
                 sr_model.load_model()
                 print("load RLFN succeed!\n")
                 sr_model.eval()
                 sr_model.device()
 
             elif model_name == 'RealESRGAN':
-                sr_model = RealESRGAN()
+                sr_model = RealESRGAN(sr_factor=self.sr_factor)
                 sr_model.load_model()
                 print("load RealESRGAN succeed!\n")
                 sr_model.eval()
                 sr_model.device()
 
             elif model_name == 'ShuffleCUGAN':
-                sr_model = ShuffleCUGAN()
+                sr_model = ShuffleCUGAN(sr_factor=self.sr_factor)
                 sr_model.load_model()
                 print("load ShuffleCUGAN succeed!\n")
                 sr_model.eval()
                 sr_model.device()
 
             else:
-                sr_model = RealESRGAN()
+                sr_model = RealESRGAN(sr_factor=self.sr_factor)
                 sr_model.load_model()
                 print("load RealESRGAN succeed!\n")
                 sr_model.eval()
@@ -70,7 +71,7 @@ class UpscalingEngine:
                 
             self.model = sr_model
         except:
-            sr_model = RLFN()
+            sr_model = RLFN(sr_factor=self.sr_factor)
             sr_model.load_model()
             print("load RLFN succeed!\n")
             sr_model.eval()
