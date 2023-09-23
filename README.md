@@ -1,14 +1,14 @@
 # Very Mix WebUI
 
 ## Introduction
-Very Mix WebUI is a video enhancement tool, based on AI models, which achieving 2x, 4x, and 6x frame interpolation for videos, as well as 2x upscaling.
+Very Mix WebUI is a video enhancement tool, based on AI models, which achieving 2x, 4x, and 6x frame interpolation for videos, as well as 2x, and 4x upscaling.
 
 ## Supported Features
 * [x] Frame Interpolation
     * [x] RIFE
     * [x] EMAVFI
-* [ ] Upscaling
-    * [ ] RLFN
+* [x] Upscaling
+    * [x] RLFN
     * [ ] RealESRGAN
     * [ ] ShuffleCUGAN
 * [ ] Restore
@@ -46,27 +46,29 @@ chmod u+x Miniconda3-py38_4.9.2-Linux-x86_64.sh
 
 #### Create a New Conda Environment
 ```shell
-conda create -n video-enhance-webui python=3.10 pytorch==1.12.0 cudatoolkit=11.3 -c pytorch -y
+conda create -n verymix-webui python=3.10 pytorch==1.12.0 cudatoolkit=11.3 -c pytorch -y
 ```
 
 #### Install the Remaining Dependencies
 ```shell
-conda activate video-enhance-webui
-python -m pip --no-cache-dir install -r requirements-deploy-py3.10.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/ 
+conda activate verymix-webui
+python -m pip --no-cache-dir install -r requirements-deploy-py3.10.txt
 ```
 
 #### Download model files 
-[Download RIFE v4.6](https://github.com/hzwer/Practical-RIFE)
+RIFE v4.6 | [flownet.pkl](https://github.com/hzwer/Practical-RIFE)
 
-[Download EMAVFI](https://github.com/MCG-NJU/EMA-VFI)
+EMAVFI | [ours_small_t.pkl, ours_t.pkl](https://github.com/MCG-NJU/EMA-VFI) (please rename ours_small_t.pkl, ours_t.pkl to emavfi_s_t.pkl, emavfi_t.pkl respectively)
+
+RLFN | [rlfn_s_x2.pth, rlfn_s_x4.pth](https://github.com/bytedance/RLFN/tree/main/model_zoo)
 
 To be added:
 
-[Download RLFN]()
+RealESRGAN
 
-[Download RealESRGAN]()
+ShuffleCUGAN
 
-[Download ShuffleCUGAN]()
+Video Restore
 
 Place the model file in the appropriate folder, eg:
 
@@ -90,9 +92,9 @@ export GRADIO_TEMP_DIR=./temp/gradio && python webui.py --config=config.yaml  # 
 
 ## Acknowledgements
 
+- https://github.com/jhogsett/EMA-VFI-WebUI
 - https://github.com/megvii-research/ECCV2022-RIFE
 - https://github.com/MCG-NJU/EMA-VFI
+- https://github.com/bytedance/RLFN
 - https://github.com/xinntao/Real-ESRGAN
-- https://github.com/jhogsett/EMA-VFI-WebUI
 - https://gradio.app/
-- https://github.com/gradio-app/gradio
