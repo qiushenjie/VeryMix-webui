@@ -1,5 +1,6 @@
 # Very Mix WebUI
 
+![img](images/demo1.png)
 ## Introduction
 Very Mix WebUI is a video enhancement tool, based on AI models, which achieving 2x, 4x, and 6x frame interpolation for videos, as well as 2x, and 4x upscaling.
 
@@ -52,7 +53,7 @@ conda create -n verymix-webui python=3.10 pytorch==1.12.0 cudatoolkit=11.3 -c py
 #### Install the Remaining Dependencies
 ```shell
 conda activate verymix-webui
-python -m pip --no-cache-dir install -r requirements-deploy-py3.10.txt
+python -m pip --no-cache-dir install -r requirements.txt
 ```
 
 #### Download model files 
@@ -62,7 +63,7 @@ EMAVFI | [ours_small_t.pkl, ours_t.pkl](https://github.com/MCG-NJU/EMA-VFI) (ple
 
 RLFN | [rlfn_s_x2.pth, rlfn_s_x4.pth](https://github.com/bytedance/RLFN/tree/main/model_zoo)
 
-To be added:
+##### To be added:
 
 RealESRGAN
 
@@ -89,6 +90,12 @@ Start the web service:
 ```shell
 export GRADIO_TEMP_DIR=./temp/gradio && python webui.py --config=config.yaml  # GRADIO_TEMP_DIR: Specify the file storage path
 ```
+
+Interpoalte or upsampling video:
+
+![img](images/VeryMix-guide.png)
+
+
 
 ## Acknowledgements
 
