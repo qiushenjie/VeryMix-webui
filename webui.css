@@ -94,3 +94,6 @@ footer {
     opacity: 0.85;
 }
 
+* {
+    font-size: 16px !important;
+}
