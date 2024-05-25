@@ -88,7 +88,7 @@ class VideoInterpolation(TabBase):
             with gr.Row():
                 with gr.Column():
                     with gr.Row():
-                        model_name = gr.Dropdown(['RIFE v4.6', 'EMAVFI Small', 'EMAVFI'], value="RIFE v4.6", label='Choose Model')  # 模型
+                        model_name = gr.Dropdown(['RIFE v4.6', 'RIFE v4.15', 'RIFE v4.17', 'EMAVFI Small', 'EMAVFI'], value="RIFE v4.6", label='Choose Model')  # 模型
                         interpolation_factor = gr.Slider(value=2.0, minimum=2.0, maximum=6.0, step=2.0, label='Interpolation Factor')  # 插帧倍数
                     with gr.Accordion("Setting", open=True):  # 设置
                         with gr.Row():
@@ -107,9 +107,9 @@ class VideoInterpolation(TabBase):
                 # video input/previewed/output
                 with gr.Column():
                     with gr.Column():
-                        video_upload = gr.File(type="file", label="Input Video", file_types=[".mp4", ".mkv", ".avi", ".wmv", ".flv", ".m4v", ".mov",".ts", ".webm", ".rmvb"])  # 上传视频
+                        video_upload = gr.File(type="filepath", label="Input Video", file_types=[".mp4", ".mkv", ".avi", ".wmv", ".flv", ".m4v", ".mov",".ts", ".webm", ".rmvb"])  # 上传视频
                         dst_video_preview = gr.Video(label="Previewed Video", format="mp4", visible=False)  # 视频预览
-                        video_output = gr.File(type="file", label="Video Download", file_count="multiple", visible=False)  # 视频下载
+                        video_output = gr.File(type="filepath", label="Video Download", file_count="multiple", visible=False)  # 视频下载
 
                         with gr.Row():
                             run_btn = gr.Button("Run", variant="primary", interactive=False)
@@ -137,8 +137,8 @@ class VideoInterpolation(TabBase):
         # refresh button state after refresh upload video
         video_upload.change(lambda video_upload, vfi_session_state:
                             (
-                             gr.Button.update(interactive=((video_upload != None) and (vfi_session_state.task_stop == None))),
-                             gr.Button.update(interactive=(vfi_session_state.task_stop != None))
+                             gr.update(interactive=((video_upload != None) and (vfi_session_state.task_stop == None))),
+                             gr.update(interactive=(vfi_session_state.task_stop != None))
                             ),
                             inputs=[video_upload, vfi_session_state],
                             outputs=[run_btn, stop_btn])
@@ -156,7 +156,14 @@ class VideoInterpolation(TabBase):
                     video_upload,
                     ],
                 outputs=[vfi_session_state])\
-            .success(self.run_enhance, inputs=[vfi_session_state], outputs=[vfi_session_state, dst_video_preview, video_output, run_btn, stop_btn])
+            .success(self.run_enhance, inputs=[vfi_session_state], outputs=[vfi_session_state, dst_video_preview, video_output, run_btn, stop_btn])\
+            .success(lambda :  # 注释:和 gradio3.36.1 版本不同的是，在 gradio4 中，如果 button 作为参数传入函数中，在函数运行过程中，button 的状态是不可更改的，直到函数运行完成。
+                     (
+                        gr.update(interactive=True),
+                        gr.update(interactive=False)
+                     ),
+                     inputs=None,
+                     outputs=[run_btn, stop_btn])
 
         # click "Stop": refresh button state -> cancel enhancement task -> output the finished part
         stop_btn\
@@ -169,17 +176,17 @@ class VideoInterpolation(TabBase):
 
     def on_click_run(self):
         return \
-            gr.Video.update(value=None, visible=False),\
-            gr.File.update(value=None, visible=True),\
-            gr.Button.update(interactive=False),\
-            gr.Button.update(interactive=True)
+            gr.update(value=None, visible=False),\
+            gr.update(value=None, visible=True),\
+            gr.update(interactive=False),\
+            gr.update(interactive=True)
 
     def on_click_stop(self):
         """
         1. Disable Run and Stop button immediately
         2. Enable Run button after Very Mix process finished
         """
-        return gr.Button.update(interactive=False), gr.Button.update(interactive=False)
+        return gr.update(interactive=False), gr.update(interactive=False)
     
     def on_click_refresh_log(self, session_state):
         messages = session_state.log_obj.messages
@@ -187,7 +194,7 @@ class VideoInterpolation(TabBase):
 
     def on_click_clear_log(self, session_state):
         session_state.log_obj.reset()
-        return gr.Textbox.update(value="", placeholder="Press Refresh Log")
+        return gr.update(value="", placeholder="Press Refresh Log")
 
     def init_state(self,
                     vfi_session_state,
@@ -200,7 +207,7 @@ class VideoInterpolation(TabBase):
                     video_upload,
                    ):
         if video_upload:
-            vfi_session_state.video_input = video_upload.orig_name
+            vfi_session_state.video_input = video_upload.name
         else:
             vfi_session_state.video_input = None
 
@@ -273,13 +280,13 @@ class VideoInterpolation(TabBase):
         vfi_session_state.engine.release()
 
         # update current session state
-        vfi_session_state.video_output = download_path
-        vfi_session_state.video_preview = preview_path
+        vfi_session_state.video_output = str(download_path)
+        vfi_session_state.video_preview = str(preview_path)
         vfi_session_state.task_stop = vfi_session_state.enhance_stop = None
 
         return \
             vfi_session_state,\
-            gr.Video.update(value=preview_path, visible=True),\
-            gr.File.update(value=download_path, visible=True),\
-            gr.Button.update(interactive=True),\
-            gr.Button.update(interactive=False)
+            gr.update(value=str(preview_path), visible=True),\
+            gr.update(value=str(download_path), visible=True),\
+            gr.update(interactive=True),\
+            gr.update(interactive=False)

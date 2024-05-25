@@ -11,6 +11,9 @@ from create_ui import create_ui
 from webui_utils.simple_config import SimpleConfig
 from webui_utils.file_utils import create_directories
 
+DEFAULT_CONCURRENCY_LIMIT = int(os.environ.get("DEFAULT_CONCURRENCY_LIMIT", 10))  # DEFAULT_CONCURRENCY_LIMIT // 2 为默认并行数
+REQUIRE_MAX_SIZE = int(os.environ.get("REQUIRE_MAX_SIZE", 20))  # REQUIRE_MAX_SIZE 为默认最大请求数
+
 
 def main():
     """Run the application"""
@@ -24,6 +27,7 @@ def main():
     base_config = SimpleConfig(args.config_path).config_obj()
     create_directories(base_config.directories)
     WebUI(base_config, log).start()
+
 
 class WebUI:
     """Top-Level application logic"""
@@ -41,7 +45,7 @@ class WebUI:
         while True:
             print("\nStarting Very-Mix-WEB")
             app = create_ui(self.base_config, self.log, self.restart_app)
-            app.queue(concurrency_count=5, max_size=8)
+            app.queue(default_concurrency_limit=DEFAULT_CONCURRENCY_LIMIT, max_size=REQUIRE_MAX_SIZE)
             app.launch(inbrowser = self.base_config.auto_launch_browser and not self.prevent_inbrowser,
                         server_name = self.base_config.server_name,
                         server_port = self.base_config.server_port,

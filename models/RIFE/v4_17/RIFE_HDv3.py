@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from models.RIFE.warplayer import warp
 from torch.nn.parallel import DistributedDataParallel as DDP
-from models.RIFE.IFNet_HDv3 import *
+from models.RIFE.v4_17.IFNet_HDv3 import *
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     

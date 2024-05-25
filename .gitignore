@@ -144,8 +144,6 @@ output/
 # VFI core bits
 #ckpt/
 
-# RealESRGAN core bits
-realesrgan/
 weights/
 
 # junk

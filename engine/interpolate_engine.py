@@ -14,7 +14,9 @@ import torch
 
 '''==========import from our code=========='''
 from models.EMAVFI.EMAVFI import EMAVFI  # pylint: disable=import-error
-from models.RIFE.RIFE_HDv3 import Model as RIFE
+from models.RIFE.v4_6.RIFE_HDv3 import Model as RIFE
+from models.RIFE.v4_15.RIFE_HDv3 import Model as RIFE
+from models.RIFE.v4_17.RIFE_HDv3 import Model as RIFE
 
 
 class InterpolateEngine:
@@ -54,16 +56,34 @@ class InterpolateEngine:
                 vfi_model.device()
                 
             elif model_name == 'RIFE v4.6':
+                from models.RIFE.v4_6.RIFE_HDv3 import Model as RIFE
                 vfi_model = RIFE()
                 vfi_model.load_model(os.path.join(__dir__, "../ckpt/RIFEv4.6"), -1)
                 print("load RIFE v4.6 succeed!\n")
                 vfi_model.eval()
                 vfi_model.device()
+                
+            elif model_name == 'RIFE v4.15':
+                from models.RIFE.v4_15.RIFE_HDv3 import Model as RIFE
+                vfi_model = RIFE()
+                vfi_model.load_model(os.path.join(__dir__, "../ckpt/RIFEv4.15"), -1)
+                print("load RIFE v4.15 succeed!\n")
+                vfi_model.eval()
+                vfi_model.device()
+                
+            elif model_name == 'RIFE v4.17':
+                from models.RIFE.v4_17.RIFE_HDv3 import Model as RIFE
+                vfi_model = RIFE()
+                vfi_model.load_model(os.path.join(__dir__, "../ckpt/RIFEv4.17"), -1)
+                print("load RIFE v4.17 succeed!\n")
+                vfi_model.eval()
+                vfi_model.device()
 
             else:
+                from models.RIFE.v4_17.RIFE_HDv3 import Model as RIFE
                 vfi_model = RIFE()
-                vfi_model.load_model(os.path.join(__dir__, "../ckpt/RIFEv4.6"), -1)
-                print("load RIFE v4.6 succeed!\n")
+                vfi_model.load_model(os.path.join(__dir__, "../ckpt/RIFEv4.17"), -1)
+                print("load RIFE v4.17 succeed!\n")
                 vfi_model.eval()
                 vfi_model.device()
                 
